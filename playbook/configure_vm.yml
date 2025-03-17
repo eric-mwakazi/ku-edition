@@ -2,68 +2,76 @@
 - hosts: all
   become: true
   tasks:
-  - name: Add ips in host file for quick DNS.
-    ansible.builtin.copy:
-      dest: "/etc/resolv.conf"
-      content: |
-        search {{ inventory_hostname }}
-        nameserver 8.8.8.8
-        nameserver 8.8.4.4
+    - name: Update and upgrade all packages
+      apt:
+        update_cache: yes
+        upgrade: dist
 
-  - name: Set the hostname
-    ansible.builtin.hostname:
-      name: "{{ inventory_hostname }}"
-    timeout: 300
+    - name: Install python3-six (fix Ansible module error)
+      apt:
+        name: python3-six
+        state: present
 
-  - name: Installing UFW
-    apt:
-      name: ufw
-      state: present
-      update_cache: yes
+    - name: Add IPs in host file for quick DNS.
+      ansible.builtin.copy:
+        dest: "/etc/resolv.conf"
+        content: |
+          search {{ inventory_hostname }}
+          nameserver 8.8.8.8
+          nameserver 8.8.4.4
 
-  - name: Srarting UFW
-    systemd:
-      name: ufw
-      state: started
-      enabled: yes
+    - name: Set the hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+      timeout: 300
 
-  - name: Allow SSH (port 22)
-    ufw:
-      rule: allow
-      port: '22'
-      proto: tcp
+    - name: Installing UFW
+      apt:
+        name: ufw
+        state: present
 
-  - name: Allow HTTP (port 80)
-    ufw:
-      rule: allow
-      port: '80'
-      proto: tcp
+    - name: Starting UFW
+      systemd:
+        name: ufw
+        state: started
+        enabled: yes
 
-  - name: Allow HTTPS (port 443)
-    ufw:
-      rule: allow
-      port: ''
-      proto: tcp
+    - name: Allow SSH (port 22)
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
 
-  - name: Install NGINX
-    apt:
-      name: nginx
-      state: present
-      update_cache: yes
+    - name: Allow HTTP (port 80)
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
 
-  - name: Start and Enable NGINX
-    systemd:
-      name: nginx
-      enabled: yes
-      state: started
+    - name: Allow HTTPS (port 443)
+      ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
 
-  - name: Deploy Welcome Pages
-    template:
-      src: welcome_page.j2
-      dest: /var/www/html/index.html
+    - name: Install NGINX
+      apt:
+        name: nginx
+        state: present
 
-  - name: Gracefully reboot VM {{ inventory_hostname }}
-    ansible.builtin.shell: "systemctl reboot"
-    async: 1
-    poll: 0
-    ignore_errors: true
+    - name: Start and Enable NGINX
+      systemd:
+        name: nginx
+        enabled: yes
+        state: started
+
+    - name: Deploy Welcome Pages
+      template:
+        src: welcome_page.j2
+        dest: /var/www/html/index.html
+
+    - name: Gracefully reboot VM {{ inventory_hostname }}
+      ansible.builtin.shell: "systemctl reboot now"
+      async: 1
+      poll: 0
+      ignore_errors: true
