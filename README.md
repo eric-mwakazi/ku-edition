@@ -1,6 +1,6 @@
 # 🚀 Automating Infrastructure with Ansible: My Experience at Nairobi DevOps 2025 🐳🚀 🚀 🌐☸️
 
-<img src='./assets/3.png'>
+<img src='./assets/ansbleandngix.png'>
 
 This project automates the setup of an EC2 instance with UFW, NGINX, and a custom welcome page using Ansible.
 
@@ -67,6 +67,7 @@ Execute the following command to run the playbook:
 ansible-playbook -i inventory/kube_inventory playbook/configure_vm.yml
 ```
 
+
 This will:
 
 ✔️ Update and upgrade packages
@@ -85,6 +86,10 @@ This will:
 
 ✔️ Reboot the instance
 
+## Expected results
+<img src='./assets/play.png'>
+<img src='./assets/play2.png'>
+
 ## Verification
 After the playbook runs successfully, you can verify:
 - NGINX is running by visiting the EC2 public IP in your browser.
@@ -94,6 +99,10 @@ Example:
 ```sh
 http://<your-ec2-public-ip>
 ```
+## Expected results
+<img src='./assets/ku-final.png'>
+<img src='./assets/msu-final.png'>
+<img src='./assets/uon-final.png'>
 
 ## Troubleshooting
 - Ensure the private key has correct permissions (`chmod 400`).
@@ -101,6 +110,9 @@ http://<your-ec2-public-ip>
 
 ## Conclusion
 This playbook automates setting up an EC2 instance with NGINX and UFW. Modify the `welcome_page.j2` template as needed for custom content.
+
+## Stop the Servers and VMs:
+Once you're done testing, remember to stop any unused EC2 instances or VMs to avoid unnecessary costs. In AWS, you can stop the instance directly from the EC2 dashboard.
 
 ## 📚 Resources
 
@@ -117,7 +129,3 @@ This playbook automates setting up an EC2 instance with NGINX and UFW. Modify th
 - Check out my GitHub repository for DevOps resources and books:  
   [DevOps_Books Repository](https://github.com/eric-mwakazi/DevOps_Books) 🚀 
 
-## Sharing My Learnings
-
-Today’s task highlighted the importance of Dockerfile best practices and how multistage builds can optimize your images. Big thanks to [@PiyushSachdeva](https://www.linkedin.com/in/piyush-sachdeva) and [@CloudOps Community](https://www.linkedin.com/company/thecloudopscomm) for the inspiration.
-Happy automating! 🚀
