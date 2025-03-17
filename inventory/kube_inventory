@@ -1,11 +1,9 @@
-[proxmox]
-pve ansible_host=192.168.1.2
 
-[ku]
+[ec2-node1]
 ku-web-server ansible_host=192.168.1.90
 
-[maseno]
+[ec2-node3]
 maseno-web-server ansible_host=192.168.1.91
 
-[uon]
+[ec2-node3]
 uon-web-server ansible_host=192.168.1.92
