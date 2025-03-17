@@ -64,14 +64,22 @@ ansible-playbook -i inventory/kube_inventory playbook/configure_vm.yml
 ```
 
 This will:
-- Update and upgrade packages.
-- Install `python3-six`.
-- Configure DNS.
-- Set the hostname.
-- Install and start UFW, allowing SSH, HTTP, and HTTPS.
-- Install and start NGINX.
-- Deploy the custom welcome page.
-- Reboot the instance gracefully.
+
+✔️ Update and upgrade packages
+
+✔️ Install python3-six for Ansible compatibility
+
+✔️ Configure DNS settings
+
+✔️ Sets the hostname
+
+✔️ Install and configure UFW firewall
+
+✔️ Install and start Nginx
+
+✔️ Deploy a welcome page
+
+✔️ Reboot the instance
 
 ## Verification
 After the playbook runs successfully, you can verify:
