@@ -1,0 +1,63 @@
+---
+  hosts: localhost
+  become: true
+  tasks:
+  - name: Add ips in host file for quick DNS.
+    ansible.builtin.copy:
+      dest: "/etc/resolv.conf"
+      content: |
+        search {{ node.name }}
+        nameserver 8.8.8.8
+        nameserver 8.8.4.4
+
+  - name: Set the hostname
+    ansible.builtin.hostname:
+      name: "{{ node.name }}"
+    timeout: 300
+
+  - name: Installing UFW
+    apt:
+      name: ufw
+      state: present
+      update_cache: yes
+
+  - name: Srarting UFW
+    systemd:
+      name: ufw
+      state: started
+      enabled: yes
+
+  - name: Allow SSH (port 22)
+    ufw:
+      rule: allow
+      port: '22'
+      proto: tcp
+
+  - name: Allow HTTP (port 80)
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Allow HTTPS (port 443)
+    ufw:
+      rule: allow
+      port: ''
+      proto: tcp
+
+  - name: Install NGINX
+    apt:
+      name: nginx
+      state: present
+      update_cache: yes
+
+  - name: Start and Enable NGINX
+    systemd:
+      name: nginx
+      enabled: yes
+      state: started
+
+  - name: Deploy Welcome Pages
+    template:
+      src: welcome_page.j2
+      dest: /var/www/html/index.html
