@@ -18,7 +18,10 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
 
    https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
    
-
+## Clone project from github
+```
+git clone https://github.com/eric-mwakazi/ku-edition.git
+```
 ## Project Structure
 
 ```plaintext
