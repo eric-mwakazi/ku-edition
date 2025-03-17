@@ -13,10 +13,11 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
      chmod 400 path/to/your-key.pem
      ```
    - Obtained the public IP of the EC2 instance.
-3. **Install Ansible** (if not already installed):
-   ```sh
-   sudo apt update && sudo apt install ansible -y
-   ```
+3. **Install Ansible** (if not already installed): https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+4. **Install git** (if not already installed):
+
+   https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+   
 
 ## Project Structure
 
