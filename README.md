@@ -14,8 +14,13 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
      chmod 400 path/to/your-key.pem
      ```
    - Obtained the public IP of the EC2 instance.
-   - 📽️ Video guide creating ec2 on aws console
-   [![Day 35/40 - Kubernetes ETCD Backup And Restore Explained](https://img.youtube.com/vi/R2wuFCYgnm4/sddefault.jpg)](https://youtu.be/R2wuFCYgnm4)
+📽️ **Video guide: Creating EC2 on AWS Console**
+
+        <video width="320" height="240" controls>
+        <source src="./assets/ec2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+
 
 3. **Install Ansible** (if not already installed): https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 4. **Install git** (if not already installed):
