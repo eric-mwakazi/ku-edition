@@ -14,15 +14,25 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
      chmod 400 path/to/your-key.pem
      ```
    - Obtained the public IP of the EC2 instance
-   - 📽️ **Video guide: Creating EC2 on AWS Console**  
-
-[![Watch the video](https://img.youtube.com/vi/geldVJtCeQ0/0.jpg)](https://youtu.be/geldVJtCeQ0)
-
 
 3. **Install Ansible** (if not already installed): https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 4. **Install git** (if not already installed):
 
    https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+## 🌐 AWS Setup Guides  
+
+### 📽️ AWS Account Setup: Step by Step Guide for Beginners  
+If you don't have a credit card, you can use the **M-Pesa App** to create a virtual card for account setup.  
+
+[![Watch the video](https://img.youtube.com/vi/xi-JDeceLeI/0.jpg)](https://youtu.be/xi-JDeceLeI?si=itg_lSkWzhYDJ26C)  
+
+---
+
+### 📽️ Creating EC2 on AWS Console  
+
+[![Watch the video](https://img.youtube.com/vi/86Tuwtn3zp0/0.jpg)](https://youtu.be/86Tuwtn3zp0)  
+
    
 ## Clone project from github
 ```
