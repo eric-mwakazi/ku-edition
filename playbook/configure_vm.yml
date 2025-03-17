@@ -1,5 +1,5 @@
 ---
-  hosts: all
+- hosts: all
   become: true
   tasks:
   - name: Add ips in host file for quick DNS.
