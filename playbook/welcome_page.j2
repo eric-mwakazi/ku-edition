@@ -3,7 +3,7 @@ a<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ node.name }} | KU DevOps Campus Tours</title>
+  <title>{{ inventory_hostname }} | KU DevOps Campus Tours</title>
   <style>
       body {
           display: flex;
@@ -20,6 +20,6 @@ a<!DOCTYPE html>
   </style>
 </head>
 <body>
-    <h1>Hello from {{ node.name }} ! <br> <br> Welcome to Nairobi DevOps Community <br>Campus Tour KU Edition</h1>
+    <h1>Hello from {{ inventory_hostname }} ! <br> <br> Welcome to Nairobi DevOps Community <br>Campus Tour KU Edition</h1>
 </body>
 </html>

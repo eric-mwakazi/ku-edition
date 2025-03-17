@@ -1,18 +1,18 @@
 ---
-  hosts: localhost
+  hosts: all
   become: true
   tasks:
   - name: Add ips in host file for quick DNS.
     ansible.builtin.copy:
       dest: "/etc/resolv.conf"
       content: |
-        search {{ node.name }}
+        search {{ inventory_hostname }}
         nameserver 8.8.8.8
         nameserver 8.8.4.4
 
   - name: Set the hostname
     ansible.builtin.hostname:
-      name: "{{ node.name }}"
+      name: "{{ inventory_hostname }}"
     timeout: 300
 
   - name: Installing UFW
@@ -61,3 +61,9 @@
     template:
       src: welcome_page.j2
       dest: /var/www/html/index.html
+
+  - name: Gracefully reboot VM {{ inventory_hostname }}
+    ansible.builtin.shell: "systemctl reboot"
+    async: 1
+    poll: 0
+    ignore_errors: true
