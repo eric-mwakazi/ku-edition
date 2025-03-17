@@ -90,15 +90,16 @@ This playbook automates setting up an EC2 instance with NGINX and UFW. Modify th
 
 ### 🎬 Video Tutorials
 
-1. [Ansible Basics and Setup (YouTube Playlist)](https://www.youtube.com/watch?v=2hVSpENzhwA&list=PL7iMyoQPMtAPZl58ovoOlxFxNPioSx838)  
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/2hVSpENzhwA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  
+1. **Ansible Basics and Setup (YouTube Playlist)**  
+   [![Ansible Basics and Setup](https://img.youtube.com/vi/2hVSpENzhwA/sddefault.jpg)](https://www.youtube.com/watch?v=2hVSpENzhwA&list=PL7iMyoQPMtAPZl58ovoOlxFxNPioSx838)  
 
-2. [Deploying NGINX with Ansible (YouTube Playlist)](https://www.youtube.com/watch?v=3RiVKs8GHYQ&list=PLT98CRl2KxKEUHie1m24-wkyHpEsa4Y70)  
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/3RiVKs8GHYQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  
+2. **Deploying NGINX with Ansible (YouTube Playlist)**  
+   [![Deploying NGINX with Ansible](https://img.youtube.com/vi/3RiVKs8GHYQ/sddefault.jpg)](https://www.youtube.com/watch?v=3RiVKs8GHYQ&list=PLT98CRl2KxKEUHie1m24-wkyHpEsa4Y70)  
 
 ### 📘 DevOps Books Repository  
 
 - Check out my GitHub repository for DevOps resources and books:  
-  [DevOps_Books Repository](https://github.com/eric-mwakazi/DevOps_Books) 🚀  
+  [DevOps_Books Repository](https://github.com/eric-mwakazi/DevOps_Books) 🚀 
+
 
 Happy automating! 🚀
