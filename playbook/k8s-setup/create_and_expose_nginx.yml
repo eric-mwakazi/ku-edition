@@ -1,0 +1,46 @@
+- name: Delploy a simple Nginx app.
+  hosts: proxy-blue, proxy-green
+  tasks:
+    - name: Create a deployment.
+      kubernetes.core.k8s:
+        kubeconfig: /home/eric/.kube/config      
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: myapp
+            namespace: eric
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                app: nginx
+            template:
+              metadata:
+                labels:
+                  app: nginx
+              spec:
+                containers:
+                  - name: nginx
+                    image: nginx:latest
+                    ports:
+                      - containerPort: 80
+
+    - name: Expose deployment as a service.
+      kubernetes.core.k8s:
+        kubeconfig: /home/eric/.kube/config       
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-service
+            namespace: eric
+          spec:
+            selector:
+              app: nginx
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+                nodePort: 30010
+            type: NodePort

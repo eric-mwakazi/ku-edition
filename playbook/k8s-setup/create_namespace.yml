@@ -1,0 +1,25 @@
+- name: Create K8S resource
+  hosts: proxy-blue, proxy-green
+  tasks:
+    - name: Ensure pip is installed
+      apt:
+        name: python3-pip
+        state: present
+      become: true
+
+    - name: Install pre-requisites
+      pip:
+        name:
+          - openshift
+          - pyyaml
+          - kubernetes
+
+    - name: Ensure Kubernetes namespace exists
+      kubernetes.core.k8s:
+        kubeconfig: /home/eric/.kube/config
+        name: eric
+        api_version: v1
+        kind: Namespace
+        state: present
+      environment:
+        KUBECONFIG: /home/eric/.kube/config

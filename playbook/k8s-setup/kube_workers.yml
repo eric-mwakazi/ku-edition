@@ -1,0 +1,57 @@
+- name: Configure join commands on Master-blue Node.
+  hosts: master-blue
+  become: yes
+  tasks:
+    - name: Retrieve the join command.
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: Set the join command.
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+- name: Join the worker-blue nodes.
+  hosts: workers-blue
+  become: yes
+  tasks:
+    - name: Enable TCP port 6443 (On Master) so it is able to connect from Worker nodes
+      wait_for:
+        host: "{{ item }}"
+        port: 6443
+        timeout: 1
+      loop: "{{ groups['master-blue'] }}"  # Loop through all master nodes
+
+    - name: Join all workers-blue to the cluster.
+      shell: "{{ hostvars[groups['master-blue'][0]].join_command }} >> node_joined.log"  # Use the first master for the join command
+      args:
+        chdir: /home/eric
+        creates: node_joined.log
+
+- name: Configure join commands on Master-green Node.
+  hosts: master-green
+  become: yes
+  tasks:
+    - name: Retrieve the join command.
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: Set the join command.
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+- name: Join the worker-green nodes.
+  hosts: workers-green
+  become: yes
+  tasks:
+    - name: Enable TCP port 6443 (On Master) so it is able to connect from Worker nodes
+      wait_for:
+        host: "{{ item }}"
+        port: 6443
+        timeout: 1
+      loop: "{{ groups['master-green'] }}"  # Loop through all master nodes
+
+    - name: Join all workers to the cluster.
+      shell: "{{ hostvars[groups['master-green'][0]].join_command }} >> node_joined.log"  # Use the first master for the join command
+      args:
+        chdir: /home/eric
+        creates: node_joined.log

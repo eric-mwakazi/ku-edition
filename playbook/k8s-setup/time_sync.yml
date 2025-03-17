@@ -1,0 +1,21 @@
+---
+- name: Synchronize time across hosts
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure NTP package is installed
+      package:
+        name: ntp
+        state: present
+
+    - name: Configure NTP servers
+      template:
+        src: ntp.conf.j2
+        dest: /etc/ntp.conf
+      notify: Restart NTP
+
+  handlers:
+    - name: Restart NTP
+      service:
+        name: ntp
+        state: restarted

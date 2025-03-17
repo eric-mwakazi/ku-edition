@@ -1,0 +1,223 @@
+- name: K8S Green cluster setup.
+  hosts: master-green
+  become: yes
+  tasks:
+    - name: Create an empty file for kubeadm config.
+      copy:
+        content: ""
+        dest: /etc/kubernetes/kubeadm-config.yaml
+        force: no
+
+    - name: Configure container runtime.
+      blockinfile:
+        path: /etc/kubernetes/kubeadm-config.yaml
+        block: |
+          kind: ClusterConfiguration
+          apiVersion: kubeadm.k8s.io/v1beta3
+          networking:
+            podSubnet: "10.244.0.0/16"
+          ---
+          kind: KubeletConfiguration
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          runtimeRequestTimeout: "15m"
+          cgroupDriver: "systemd"
+          systemReserved:
+            cpu: 100m
+            memory: 350M
+          kubeReserved:
+            cpu: 100m
+            memory: 50M
+          enforceNodeAllocatable:
+          - pods
+
+    - name: Initialize the K8S cluster and generate logs.
+      shell: kubeadm init --config /etc/kubernetes/kubeadm-config.yaml >> cluster_initialized.log
+      args:
+        chdir: /home/eric
+        creates: cluster_initialized.log
+
+    - name: Create .kube directory for user eric.
+      become_user: eric
+      file:
+        path: /home/eric/.kube
+        state: directory
+        mode: 0755
+
+    - name: Copy admin.conf to user's kube config.
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/eric/.kube/config
+        owner: eric
+        mode: 0755
+        remote_src: yes
+
+    - name: Install a flannel pod network
+      become_user: eric
+      shell: kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml >> pod_network_setup.log
+      args:
+        chdir: /home/eric
+        creates: pod_network_setup.log
+
+- name: Fetch admin.conf from master-green and distribute to all nodes.
+  hosts: master-green, workers-green, proxy-green
+  become: yes
+  tasks:
+    - name: Ensure .kube directory exists on all nodes for user eric.
+      become_user: eric
+      file:
+        path: /home/eric/.kube
+        state: directory
+        mode: '0700'
+
+    - name: Fetch admin.conf from master to localhost (on master node).
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /tmp/admin.conf
+        flat: yes
+      when: "'master-green' in group_names"
+
+    - name: Copy admin.conf from localhost to worker-green and proxy-green nodes.
+      copy:
+        src: /tmp/admin.conf
+        dest: /home/eric/.kube/config
+        owner: eric
+        mode: '0700'
+      when: "'workers-green' in group_names or 'proxy-green' in group_names"
+
+    - name: Set KUBECONFIG environment variable persistently for user eric.
+      lineinfile:
+        path: /home/eric/.bashrc
+        line: 'export KUBECONFIG=/home/eric/.kube/config'
+        create: yes
+
+    - name: Apply KUBECONFIG immediately for user eric.
+      shell: source /home/eric/.bashrc
+      args:
+        executable: /bin/bash
+
+- name: Set KUBECONFIG for root user persistently across all nodes.
+  hosts: master-green, workers-green, proxy-green
+  become: yes
+  tasks:
+    - name: Set KUBECONFIG environment variable persistently for root.
+      lineinfile:
+        path: /root/.bashrc
+        line: 'export KUBECONFIG=/etc/kubernetes/admin.conf'
+        create: yes
+
+    - name: Apply KUBECONFIG immediately for root user.
+      shell: . /root/.bashrc
+      args:
+        executable: /bin/bash
+
+- name: K8S blue cluster setup.
+  hosts: master-blue
+  become: yes
+  tasks:
+    - name: Create an empty file for kubeadm config.
+      copy:
+        content: ""
+        dest: /etc/kubernetes/kubeadm-config.yaml
+        force: no
+
+    - name: Configure container runtime.
+      blockinfile:
+        path: /etc/kubernetes/kubeadm-config.yaml
+        block: |
+          kind: ClusterConfiguration
+          apiVersion: kubeadm.k8s.io/v1beta3
+          networking:
+            podSubnet: "10.244.0.0/16"
+          ---
+          kind: KubeletConfiguration
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          runtimeRequestTimeout: "15m"
+          cgroupDriver: "systemd"
+          systemReserved:
+            cpu: 100m
+            memory: 350M
+          kubeReserved:
+            cpu: 100m
+            memory: 50M
+          enforceNodeAllocatable:
+          - pods
+
+    - name: Initialize the K8S cluster and generate logs.
+      shell: kubeadm init --config /etc/kubernetes/kubeadm-config.yaml >> cluster_initialized.log
+      args:
+        chdir: /home/eric
+        creates: cluster_initialized.log
+
+    - name: Create .kube directory for user eric.
+      become_user: eric
+      file:
+        path: /home/eric/.kube
+        state: directory
+        mode: 0755
+
+    - name: Copy admin.conf to user's kube config.
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/eric/.kube/config
+        owner: eric
+        mode: 0755
+        remote_src: yes
+
+    - name: Install a flannel pod network
+      become_user: eric
+      shell: kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml >> pod_network_setup.log
+      args:
+        chdir: /home/eric
+        creates: pod_network_setup.log
+
+- name: Fetch admin.conf from master and distribute to all nodes.
+  hosts: master-blue, workers-blue, proxy-blue
+  become: yes
+  tasks:
+    - name: Ensure .kube directory exists on all nodes for user eric.
+      become_user: eric
+      file:
+        path: /home/eric/.kube
+        state: directory
+        mode: '0700'
+
+    - name: Fetch admin.conf from master to localhost (on master node).
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /tmp/admin.conf
+        flat: yes
+      when: "'master-blue' in group_names"
+
+    - name: Copy admin.conf from localhost to worker-blue and proxy-blue nodes.
+      copy:
+        src: /tmp/admin.conf
+        dest: /home/eric/.kube/config
+        owner: eric
+        mode: '0700'
+      when: "'workers-blue' in group_names or 'proxy-blue' in group_names"
+
+    - name: Set KUBECONFIG environment variable persistently for user eric.
+      lineinfile:
+        path: /home/eric/.bashrc
+        line: 'export KUBECONFIG=/home/eric/.kube/config'
+        create: yes
+
+    - name: Apply KUBECONFIG immediately for user eric.
+      shell: source /home/eric/.bashrc
+      args:
+        executable: /bin/bash
+
+- name: Set KUBECONFIG for root user persistently across all nodes.
+  hosts: master-blue, workers-blue, proxy-blue
+  become: yes
+  tasks:
+    - name: Set KUBECONFIG environment variable persistently for root.
+      lineinfile:
+        path: /root/.bashrc
+        line: 'export KUBECONFIG=/etc/kubernetes/admin.conf'
+        create: yes
+
+    - name: Apply KUBECONFIG immediately for root user.
+      shell: . /root/.bashrc
+      args:
+        executable: /bin/bash

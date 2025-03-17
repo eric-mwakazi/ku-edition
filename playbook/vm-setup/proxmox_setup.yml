@@ -1,0 +1,50 @@
+- name: Load environment variables
+  hosts: localhost
+  tasks:
+    - name: Load vars from file
+      include_vars:
+        file: vm_vars_config.yml
+        name: vm_config
+
+    - name: Generate node_vms list dynamically
+      set_fact:
+        node_vms: >-
+          {{ node_vms | default([]) + 
+            [ {'vmid': item.value, 
+               'name': vm_config[item.key | regex_replace('_VMID$', '_NAME')], 
+               'ip': vm_config[item.key | regex_replace('_VMID$', '_IP')] 
+             } ]
+          }}
+      loop: "{{ vm_config | dict2items }}"
+      when: item.key is match('VM_\\d+_VMID')
+
+    - name: Debug node_vms list
+      debug:
+        var: node_vms
+
+- name: Proxmox VM setup and configuration
+  hosts: pve
+  gather_facts: no
+  vars:
+    proxmox_api_url: "{{ hostvars['localhost']['vm_config']['PROXMOX_API_URL'] }}"
+    proxmox_user: "{{ hostvars['localhost']['vm_config']['PROXMOX_USER'] }}"
+    proxmox_password: "{{ hostvars['localhost']['vm_config']['PROXMOX_PASSWORD'] }}"
+    template_vmid: "{{ hostvars['localhost']['vm_config']['TEMPLATE_VMID'] }}"
+    default_ip: "{{ hostvars['localhost']['vm_config']['DEFAULT_IP'] }}"
+  tasks:
+    - name: Clone all VMs from template
+      command: >
+        qm clone {{ template_vmid }} {{ item.vmid }} --full --name {{ item.name }} --storage local-lvm
+      loop: "{{ hostvars['localhost']['node_vms'] }}"
+      delegate_to: pve
+
+    - name: Save node_vms to pve
+      set_fact:
+        node_vms: "{{ hostvars['localhost']['node_vms'] }}"
+      run_once: true
+
+    - name: Start and configure VMs one by one
+      include_tasks: configure_vm.yml
+      loop: "{{ node_vms }}"
+      loop_control:
+        loop_var: node
