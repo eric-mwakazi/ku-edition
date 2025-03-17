@@ -1,9 +1,9 @@
 
 [ku-ec2-node1]
-ku-web-server ansible_host=54.221.51.165 ansible_user=ubuntu ansible_ssh_private_key_file=/root/ku-edition/ku-edition.pem
+ku-web-server ansible_host=54.221.51.165 ansible_user=ubuntu ansible_ssh_private_key_file=/home/mshapa/Documents/ku-edition.pem
 
 ; [ec2-node3]
-; maseno-web-server ansible_host=192.168.1.90 ansible_user=ubuntu ansible_ssh_private_key_file=/root/ku-edition/ku-edition.pem
+; maseno-web-server ansible_host=192.168.1.90 ansible_user=ubuntu ansible_ssh_private_key_file=/home/mshapa/Documents/ku-edition.pem
 
 ; [ec2-node3]
-; uon-web-server ansible_host=192.168.1.90 ansible_user=ubuntu ansible_ssh_private_key_file=/root/ku-edition/ku-edition.pem
+; uon-web-server ansible_host=192.168.1.90 ansible_user=ubuntu ansible_ssh_private_key_file=/home/mshapa/Documents/ku-edition.pem
