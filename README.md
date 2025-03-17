@@ -15,6 +15,7 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
      ```
    - Obtained the public IP of the EC2 instance.
 📽️ **Video guide: Creating EC2 on AWS Console**
+
 <video width="320" height="240" controls><source src="./assets/ec2.mp4" type="video/mp4">Your browser does not support the video tag.</video>
 
 
