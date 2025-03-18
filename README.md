@@ -14,7 +14,10 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
      chmod 400 path/to/your-key.pem
      ```
    - Obtained the public IP of the EC2 instance
-
+   ### 📝 Note
+   If you are following this on windows chmod command might not work on powershell or cmd.
+   #### ⚙️ Approach:
+   If you have vscode or git bash, right click and open the folder where your aws ssh key that was downloaded while creating the ec2 instances is with vscode or gitbash and use the terminals they provide to execute chmod command.
 3. **Install Ansible** (if not already installed): https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 4. **Install git** (if not already installed):
 
@@ -33,6 +36,10 @@ If you don't have a credit card, you can use the **M-Pesa App** to create a virt
 
 [![Watch the video](https://img.youtube.com/vi/86Tuwtn3zp0/0.jpg)](https://youtu.be/86Tuwtn3zp0)  
 
+### 📝 Note
+If you are following this on windows chmod command might not work on powershell or cmd.
+#### Approach:
+If you have vscode or git bash, right click and open the folder where your aws ssh key that was downloaded while creating the ec2 instances is  with vscode or gitbash and use the terminals they provide to execute chmod command.
    
 ## Clone project from github
 ```
