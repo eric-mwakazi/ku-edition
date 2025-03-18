@@ -1,6 +1,6 @@
 # 🚀 Automating Infrastructure with Ansible: My Experience at Nairobi DevOps 2025 🐳🚀 🚀 🌐☸️
 
-<img src='./assets/ansbleandngix.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/ansbleandngix.png'>
 
 This project automates the setup of an EC2 instance with UFW, NGINX, and a custom welcome page using Ansible.
 
@@ -99,8 +99,8 @@ This will:
 ✔️ Reboot the instance
 
 ## Expected results
-<img src='./assets/play.png'>
-<img src='./assets/play2.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play.png'> <br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play2.png'>
 
 ## Verification
 After the playbook runs successfully, you can verify:
@@ -112,9 +112,9 @@ Example:
 http://<your-ec2-public-ip>
 ```
 ## Expected results
-<img src='./assets/ku-final.png'>
-<img src='./assets/msu-final.png'>
-<img src='./assets/uon-final.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/ku-final.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/msu-final.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/uon-final.png'>
 
 ## Troubleshooting
 - Ensure the private key has correct permissions (`chmod 400`).
