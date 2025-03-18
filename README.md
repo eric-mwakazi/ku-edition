@@ -16,7 +16,7 @@ This project automates the setup of an EC2 instance with UFW, NGINX, and a custo
    - Obtained the public IP of the EC2 instance
    ### 📝 Note
    If you are following this on windows chmod command might not work on powershell or cmd.
-   #### ⚙️ Approach:
+   #### ⚙️ Solution:
    If you have vscode or git bash, right click and open the folder where your aws ssh key that was downloaded while creating the ec2 instances is with vscode or gitbash and use the terminals they provide to execute chmod command.
 3. **Install Ansible** (if not already installed): https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 4. **Install git** (if not already installed):
@@ -36,12 +36,16 @@ If you don't have a credit card, you can use the **M-Pesa App** to create a virt
 
 [![Watch the video](https://img.youtube.com/vi/86Tuwtn3zp0/0.jpg)](https://youtu.be/86Tuwtn3zp0)  
 
+### 📝 Note
+Remember to open port 22,80 and 443 while creating ec2 instance <br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/firewall.png'>
+
 ## Clone project from github
 ```
 git clone https://github.com/eric-mwakazi/ku-edition.git
 ```
-## Open project in vscodeor easy editing
-For easy in editing I recommend using a text editor like vscode for that.<br>
+## Open project in vscode
+For easy in editing. I recommend using a text editor like vscode for that.<br>
 On same terminal you cloned the project run `code ku-edition` or right click the folder ku-edition the select open with vscode.
 ## Project Structure
 
@@ -85,14 +89,19 @@ On same terminal you cloned the project run `code ku-edition` or right click the
    ```sh
    ansible -i inventory/kube_inventory all -m ping
    ```
-Should return `SUCCESS` on all nodes inside the inventory file, else check if ip and ssh key file are correct and have correct permissions.
-## Running the Playbook
+Should return `SUCCESS` on all nodes inside the inventory file, else check if ip and ssh key file are correct and have correct permissions.<br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/ping.png'>
+## The Playbooks
 
-Execute the following command to run the playbook inside the root folder of the project:
-```sh
-ansible-playbook -i inventory/kube_inventory playbook/configure_vm.yml
-```
+### 📝 What is a Playbook?
+An `Ansible Playbook` is a file that contains a list of instructions (called "plays") for automating tasks on remote machines. It’s like a recipe for Ansible, where you describe what you want to do, and Ansible takes care of the how.
+<br><br>
+* Playbooks are written in YAML format (we’ll cover YAML next!).
+Each play targets a group of hosts and defines tasks to run on them — like installing software, configuring services, or setting up Kubernetes nodes.
 
+### Example Playbook:
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play.png'> <br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play2.png'>
 
 This will:
 
@@ -112,9 +121,16 @@ This will:
 
 ✔️ Reboot the instance
 
+### Run the playbook
+Execute the following command to run the playbook inside the root folder of the project:
+```sh
+ansible-playbook -i inventory/kube_inventory playbook/configure_vm.yml
+```
+
 ## Expected results
-<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play.png'> <br>
-<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/play2.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/output.png'> <br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/output1.png'><br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/output2.png'>
 
 ## Verification
 After the playbook runs successfully, you can verify:
