@@ -36,15 +36,13 @@ If you don't have a credit card, you can use the **M-Pesa App** to create a virt
 
 [![Watch the video](https://img.youtube.com/vi/86Tuwtn3zp0/0.jpg)](https://youtu.be/86Tuwtn3zp0)  
 
-### 📝 Note
-If you are following this on windows chmod command might not work on powershell or cmd.
-#### Approach:
-If you have vscode or git bash, right click and open the folder where your aws ssh key that was downloaded while creating the ec2 instances is  with vscode or gitbash and use the terminals they provide to execute chmod command.
-   
 ## Clone project from github
 ```
 git clone https://github.com/eric-mwakazi/ku-edition.git
 ```
+## Open project in vscodeor easy editing
+For easy in editing I recommend using a text editor like vscode for that.<br>
+On same terminal you cloned the project run `code ku-edition` or right click the folder ku-edition the select open with vscode.
 ## Project Structure
 
 ```plaintext
@@ -61,7 +59,16 @@ git clone https://github.com/eric-mwakazi/ku-edition.git
 ## Configuration
 
 1. **Inventory Setup**:
-   Edit `inventory/kube_inventory` and replace the placeholders with your EC2 details:
+
+   The `inventory/kube_inventory` file is an Ansible inventory file. An inventory file lists the servers Ansible will manage and how to connect to them. In this case, it's used to define EC2 instances to be configured.
+
+   - `[ku-ec2-node1]`: Group name to organize servers.
+   - `ku-web-server`: Alias for your EC2 instance
+   - `ansible_host`: Public IP of the EC2 instance
+   - `ansible_user`: User to log in as (e.g., ubuntu for Ubuntu EC2).
+   - `ansible_ssh_private_key_file`: Path to your SSH private key for authentication.
+
+   Edit `inventory/kube_inventory` and replace the placeholders with your EC2 details. If you have more than one node/vm feel free to add there details using the format used below:
    ```ini
    [ku-ec2-node1]
    ku-web-server ansible_host=<your-ec2-public-ip> ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/your-key.pem
@@ -71,17 +78,17 @@ git clone https://github.com/eric-mwakazi/ku-edition.git
    ```sh
    ansible --version
    ```
-   Ensure Ansible Core is installed (2.14 or higher).
+   Ensure `Ansible Core` is installed (2.14 or higher).
 
 3. **Test Connection**:
    Test the connection to the EC2 instance:
    ```sh
    ansible -i inventory/kube_inventory all -m ping
    ```
-
+Should return `SUCCESS` on all nodes inside the inventory file, else check if ip and ssh key file are correct and have correct permissions.
 ## Running the Playbook
 
-Execute the following command to run the playbook:
+Execute the following command to run the playbook inside the root folder of the project:
 ```sh
 ansible-playbook -i inventory/kube_inventory playbook/configure_vm.yml
 ```
@@ -119,21 +126,22 @@ Example:
 http://<your-ec2-public-ip>
 ```
 ## Expected results
-<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/ku-final.png'>
-<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/msu-final.png'>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/ku-final.png'> <br>
+<img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/msu-final.png'><br>
 <img src='https://github.com/eric-mwakazi/ku-edition/blob/main/assets/uon-final.png'>
 
 ## Troubleshooting
 - Ensure the private key has correct permissions (`chmod 400`).
 - Verify Ansible can reach the instance with `ansible -i inventory/kube_inventory all -m ping`.
 
-## Conclusion
-This playbook automates setting up an EC2 instance with NGINX and UFW. Modify the `welcome_page.j2` template as needed for custom content.
+## 📣 Wrapping Up
+With just a few commands, you’ve automated infrastructure setup, installed NGINX, configured firewall rules, and deployed a custom welcome page. Infrastructure automation saves time, reduces errors, and brings consistency to deployments.
 
 ## Stop the Servers and VMs:
 Once you're done testing, remember to stop any unused EC2 instances or VMs to avoid unnecessary costs. In AWS, you can stop the instance directly from the EC2 dashboard.
 
 ## 📚 Resources
+If you’d like to dive deeper into Ansible and automation, check out these resources:
 
 ### 🎬 Video Tutorials
 
@@ -148,3 +156,14 @@ Once you're done testing, remember to stop any unused EC2 instances or VMs to av
 - Check out my GitHub repository for DevOps resources and books:  
   [DevOps_Books Repository](https://github.com/eric-mwakazi/DevOps_Books) 🚀 
 
+## Conclusion
+- Did it work? <br>
+- Did not it work? <br>
+- How was your experience using ansible for automation.<br>
+- Have any idea of improvements? <br>
+
+Kindly share your experience on social media tagging me on linkedin [@Eric mwakazi](https://www.linkedin.com/in/eric-mwakazi). and [@Nairobi DevOps Community](https://www.linkedin.com/groups/9351099/)
+
+Huge thanks to the [@Nairobi DevOps Community](https://www.linkedin.com/groups/9351099/) and Kenyatta University for organizing such a fantastic event.<br>
+It was an honor to share insights and learn from others passionate about DevOps and automation 🙌. <br><br>
+#DevOps #Automation #Ansible #InfrastructureAsCode #NairobiDevOps #KenyattaUniversity<br>
